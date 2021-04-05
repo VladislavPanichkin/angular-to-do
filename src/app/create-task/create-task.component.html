@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+            <div>
+                <form>
+                    <div class="form-group">
+                        <label for="id">ID</label>
+                        <input [(ngModel)]="task.id" type="text" name="id" class="form-control" id="id" aria-describedby="idHelp" placeholder="Enter ID">
+                        <small id="idHelp" class="form-text text-muted">Enter ID</small>
+
+                        <label for="id">Name</label>
+                        <input [(ngModel)]="task.name" type="text" name="name" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter name">
+                        <small id="nameHelp" class="form-text text-muted">Enter Name</small>
+
+                        <label for="id">Description</label>
+                        <input [(ngModel)]="task.description" type="text" name="description" class="form-control" id="description" aria-describedby="descriptionHelp" placeholder="Enter Description">
+                        <small id="descriptionHelp" class="form-text text-muted">Enter Description</small>
+
+                        <label for="id">Done?</label>
+                        <input [(ngModel)]="task.done" type="checkbox" name="done" class="form-control" id="done" aria-describedby="descriptionHelp">
+                        <small id="doneHelp" class="form-text text-muted">Done?</small>
+                    </div>
+                </form>
+                <button class="btn btn-primary" (click)="createTask()">Create task</button>
+            </div>
+        </div>
+    </div>
+</div>

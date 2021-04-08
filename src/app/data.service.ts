@@ -1,24 +1,63 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
-import { TaskInterface } from './TaskInterFace';
+import { TaskInterface } from './TaskInterface';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class DataService {
 
-  tasks: Array<TaskInterface> = [
-    {id: 1, name: "Angular", description: "Learn Angular thoroughly", done: false},
-    {id: 2, name: "React", description: "Learn React thoroughly", done: true},
-    {id: 1, name: "Vue", description: "Learn Vue thoroughly", done: false}
-  ]
-  constructor() { }
+  _tasks: Array<TaskInterface> = [];
 
-  public getTasks():Array<TaskInterface> {
-    return this.tasks
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  getTasks(): Observable<TaskInterface[]> {
+    return this.http.get<TaskInterface[]>(`${this.url}/tasks`);
   }
 
-  public createTask(task: TaskInterface): void {
-    this.tasks.push(task);
+  private url = "http://localhost:3000";
+
+  get tasks() {
+    return this._tasks;
   }
-}
+
+  set tasks(tasks: Array<TaskInterface>) {
+    this._tasks = tasks;
+  }
+
+  createTask(task: TaskInterface): void {
+    this.http.post<any>(`${this.url}/tasks`, task).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
+  }
+
+  toggleTask(task: number) {
+    const newTasks: Array<TaskInterface> = this.tasks.map(el => {
+      if (el.id === task) {
+        el.done = !el.done
+      }
+      return el
+    });
+   this.tasks = newTasks;
+  }
+
+  deleteTask(task: number) {
+    this.http.delete<any>(`${this.url}/tasks/${task}`);
+    const newTasks: Array<TaskInterface> = this.tasks.filter(el => el.id !== task);
+    this.tasks = newTasks;
+  }
+
+  fetchTasks = () => {
+    const response =  fetch("http://localhost:3000/tasks")
+      .then(data => data.json())
+      .then(data => {
+        return data
+      })
+      }
+  }

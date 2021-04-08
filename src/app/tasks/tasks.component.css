@@ -6,3 +6,10 @@
     padding: 5% 0;
     text-align: center
 }
+
+.close-btn {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    cursor: pointer;
+}

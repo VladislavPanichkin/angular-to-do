@@ -1,9 +1,10 @@
 <div class="container">
-    <div *ngFor="let task of tasks" class="card" style="width: 18rem;">
+    <div *ngFor="let task of tasks" class="card">
         <div class="card-body">
             <h5 class="card-title">{{ task.name }}</h5>
+            <div class="close-btn" (click)="deleteTask(task.id)">x</div>
             <p class="card-text">{{ task.description }}</p>
-            <button class="btn" [ngClass]="task.done ? 'btn-success' : 'btn-primary'" (click)="selectTask(task)">
+            <button class="btn" [ngClass]="task.done ? 'btn-success' : 'btn-primary'" (click)="selectTask(task.id)">
                 {{ task.done ? 'Done' : 'To do' }}
             </button>
         </div>

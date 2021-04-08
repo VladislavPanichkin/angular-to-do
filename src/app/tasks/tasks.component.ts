@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 
-import { TaskInterface } from '../TaskInterFace';
+import { TaskInterface } from '../TaskInterface';
 
 @Component({
   selector: 'app-tasks',
@@ -11,18 +11,26 @@ import { TaskInterface } from '../TaskInterFace';
 export class TasksComponent implements OnInit {
   
   tasks: Array<TaskInterface>;
-  selectedTask: Object;
-
-  constructor(public dataService: DataService) {
-    this.tasks = [];
-    this.selectedTask = {}
-   }
+ 
+  constructor(public dataService: DataService) { 
+    this.tasks = []
+  }
 
   ngOnInit(): void {
-    this.tasks = this.dataService.getTasks();
+    this.getTasks();
   }
-  public selectTask(task: Object): void {
-    this.selectedTask = task;
+
+  selectTask(task: number): void {
+    this.dataService.toggleTask(task);
+  }
+
+  deleteTask(task: number): void {
+    this.dataService.deleteTask(task);
+  }
+
+  getTasks(): void {
+    this.dataService.getTasks()
+      .subscribe(tasks => this.tasks = tasks)
   }
 
 }

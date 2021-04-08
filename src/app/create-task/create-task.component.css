@@ -1,0 +1,16 @@
+.container {
+    padding-top: 5%;
+    text-align: center
+}
+
+.form-control {
+    margin-bottom: 3%;
+}
+
+#done:focus {
+    box-shadow: none;
+}
+
+.invalid-feedback {
+    display: block;
+}

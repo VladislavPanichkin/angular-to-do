@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../data.service';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
-import { TaskInterface } from '../TaskInterFace';
+import { DataService } from '../data.service';
+import { TaskInterface } from '../TaskInterface';
 
 @Component({
   selector: 'app-create-task',
@@ -10,17 +11,53 @@ import { TaskInterface } from '../TaskInterFace';
 })
 export class CreateTaskComponent implements OnInit {
 
-  task: TaskInterface = {id: 4, name: "", description: "", done: false};
+  form: FormGroup;
 
-  constructor(public dataService: DataService) { }
+  loading: boolean = false;
+  success: boolean = false;
 
-  ngOnInit(): void {
+  constructor(public dataService: DataService, public fb: FormBuilder) { 
+    this.form = this.fb.group({
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      done: false
+    })
+
+    this.form.valueChanges.subscribe(console.log);
   }
+
+  get name() {
+    return this.form.get('name');
+  }
+
+  get description() {
+    return this.form.get('description');
+  }
+
+  get done() {
+    return this.form.get('done');
+  }
+
+  ngOnInit() { }
 
   createTask(): void {
-    console.log(this.task);
-    this.dataService.createTask(this.task);
-    this.task = {id: 4, name: "", description: "", done: false}
-  }
+    this.loading = true;
 
+    const formValue = this.form.value;
+
+    try {      
+      this.dataService.createTask(formValue);
+      this.success = true;
+    } catch(err) {
+      console.error(err);
+    } finally {
+      this.loading = false
+    }
+    // let formData: any = new FormData();
+    // formData.append("name", this.form.get('name').value);
+    // formData.append("description", this.form.get('description').value);
+    // formData.append("done", this.form.get('done').value);
+
+    // this.dataService.createTask(formData);
+  }
 }

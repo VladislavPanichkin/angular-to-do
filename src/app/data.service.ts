@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { TaskInterface } from './TaskInterface';
 
@@ -10,24 +10,14 @@ import { TaskInterface } from './TaskInterface';
 
 export class DataService {
 
-  _tasks: Array<TaskInterface> = [];
-
   constructor(
     private http: HttpClient
   ) { }
 
-  getTasks(): Observable<TaskInterface[]> {
-    return this.http.get<TaskInterface[]>(`${this.url}/tasks`);
-  }
-
   private url = "http://localhost:3000";
 
-  get tasks() {
-    return this._tasks;
-  }
-
-  set tasks(tasks: Array<TaskInterface>) {
-    this._tasks = tasks;
+  getTasks(): Observable<any> {
+    return of(this.http.get(`${this.url}/tasks`))
   }
 
   createTask(task: TaskInterface): void {
@@ -37,27 +27,11 @@ export class DataService {
     );
   }
 
-  toggleTask(task: number) {
-    const newTasks: Array<TaskInterface> = this.tasks.map(el => {
-      if (el.id === task) {
-        el.done = !el.done
-      }
-      return el
-    });
-   this.tasks = newTasks;
+  toggleTask(task: Object, id: number): Observable<any> {    
+    return this.http.put(`${this.url}/tasks/${id}`, task)
   }
 
-  deleteTask(task: number) {
-    this.http.delete<any>(`${this.url}/tasks/${task}`);
-    const newTasks: Array<TaskInterface> = this.tasks.filter(el => el.id !== task);
-    this.tasks = newTasks;
+  deleteTask(task: number): Observable<any>{
+    return (this.http.delete(`${this.url}/tasks/${task}`));
   }
-
-  fetchTasks = () => {
-    const response =  fetch("http://localhost:3000/tasks")
-      .then(data => data.json())
-      .then(data => {
-        return data
-      })
-      }
-  }
+}

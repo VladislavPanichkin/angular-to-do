@@ -1,22 +1,16 @@
 {
   "tasks": [
     {
-      "id": 1,
       "name": "Angular",
       "description": "Learn Angular thoroughly",
-      "done": false
+      "done": false,
+      "id": 1
     },
     {
-      "name": "asdfad",
-      "description": "asdasd",
-      "done": true,
+      "name": "Typescript",
+      "description": "Master the Typescript",
+      "done": false,
       "id": 2
-    },
-    {
-      "name": "asdfasd",
-      "description": "asfasdf",
-      "done": true,
-      "id": 3
     }
   ]
 }
